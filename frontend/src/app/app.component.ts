@@ -40,8 +40,6 @@ export class AppComponent {
       
       const unauthorizedUserPaths = [ '/login' ];
       this.user = res;
-      console.log(location.path());
-      console.log(this.user);
 
       if (!this.user) pageService.navigateRoute('login');
       else if (unauthorizedUserPaths.includes(location.path())) pageService.navigateRoute('home');

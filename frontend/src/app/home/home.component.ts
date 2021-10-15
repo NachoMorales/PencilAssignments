@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { fabric } from 'fabric';
+import { BaseComponent } from '../core/base.component';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends BaseComponent {
 
-  constructor() { }
+  canvas!: fabric.Canvas;
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
+    this.canvas = new fabric.Canvas('canvas');
+    this.canvas.setDimensions({ width: '100%', height: '100vh' }, { cssOnly: true });
   }
 
 }

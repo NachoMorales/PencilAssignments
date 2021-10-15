@@ -17,7 +17,6 @@ export class PageService {
   }
 
   navigateRoute(route: string, params = {}) {
-    console.log('NAVEGANDO WACHO ' + route);
     this.router.navigate([route], params);
   }
 
