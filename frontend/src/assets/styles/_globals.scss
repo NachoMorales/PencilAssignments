@@ -1,0 +1,114 @@
+@font-face {
+    font-family: 'Open Sans';
+    src: url("../fonts/OpenSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../fonts/Montserrat-Regular.ttf");
+}
+
+html,
+body {
+    height: auto;
+   
+}
+
+
+.spacer-1{
+    margin-bottom: 100px;
+}
+
+.mat-slider-wrapper {
+    background: #6A5741 !important;
+    border-radius: 8px !important;
+    width: 135px !important;
+    height: 13px !important;
+}
+
+.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
+    background: #F78A0E !important;
+}
+
+.mat-slider-thumb {
+    background: #F78A0E !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;               /* width of the entire scrollbar */
+}
+  
+::-webkit-scrollbar-track {
+    background: $black;        /* color of the tracking area */
+}
+  
+::-webkit-scrollbar-thumb {
+    background-color: $primary;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 1px solid $primary;  /* creates padding around scroll thumb */
+}
+
+button {
+    opacity: 1 !important;
+}
+
+.ng-tns-c223-1.ng-trigger.ng-trigger-transformPanel.mat-select-panel {
+    border-radius: 10px;
+    background: #3F3F3F !important;
+}
+.mat-select-panel {
+    background-color: #333333 !important;
+}
+.country-select {
+    .mat-option:hover {
+        background-color: #F78A0E;
+    }    
+}
+.mat-select-trigger {
+    margin-top: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.mat-select-arrow {
+    color: white;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+}
+.mat-option-text {
+    color: white;
+    font-size: 16px;
+    font-family: 'Montserrat';
+}
+
+.mat-select-trigger {
+    span {
+        color: white;
+        font-size: 16px;
+        font-family: 'Montserrat';
+    }
+}
+
+
+body {
+    margin: 0;
+    font-family: "Open Sans" !important;
+    overflow-x: hidden !important;
+    &.mat-typography {
+        font: 'Open Sans' !important;
+        background-color: #141414;
+    }
+}
+
+::-webkit-calendar-picker-indicator {
+    margin: 0;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+canvas{
+    position: relative;
+    width: 100%;
+}
