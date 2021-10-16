@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PageService } from './core/page.service';
-import * as moment from 'moment';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -29,12 +28,7 @@ export class AppComponent {
     public location: Location,
   ) {
 
-    // Moment configuration
-    moment.locale('es');
-
-
-    // (+) User
-    // this.epicFunction();
+    // To Do: mover componentes a carpeta modules
 
     authService.getLoggedUser().subscribe(res => {
       

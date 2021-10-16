@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { BaseComponent } from '../core/base.component';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent extends BaseComponent {
+export class LoginComponent {
+
+  constructor(
+    public authService: AuthService,
+  ) {}
 
   async loginWithGoogle() {
     await this.authService.loginGoogle();
