@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Settings } from '../app.settings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageService {
-
-  public settings = Settings;
 
   constructor(
     private router: Router,

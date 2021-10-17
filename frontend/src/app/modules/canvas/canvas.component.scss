@@ -3,6 +3,7 @@
   top: 30vh;
   right: 1vw;
   z-index: 2;
+  max-width: 20vw;
 
   button {
     text-align: center;
@@ -11,4 +12,12 @@
   .color-input {
     width: 100%;
   }
+}
+
+.shared-canvas {
+  position: absolute;
+  top: 30vh;
+  left: 1vw;
+  z-index: 2;
+  cursor: pointer;
 }

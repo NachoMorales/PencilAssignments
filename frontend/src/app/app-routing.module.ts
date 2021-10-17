@@ -1,29 +1,13 @@
 import { NgModule } from '@angular/core';
-import { Route, RouterModule, Routes } from '@angular/router';
-import { Settings } from './app.settings';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+import { CanvasComponent } from './modules/canvas/canvas.component';
+import { LoginComponent } from './modules/login/login.component';
 
-Settings.routes.home.component = HomeComponent;
-Settings.routes.login.component = LoginComponent;
-
-let routes: Routes = [];
-
-for (let routeKey in Settings.routes) {
-  let route: Route = Settings.routes[routeKey];
-  // let r: Route = {};
-
-  // if (route.path || route.path == '') r.path = route.path;
-  // if (route.redirectTo) r.redirectTo = route.redirectTo;
-  // if (route.pathMatch) r.pathMatch = route.pathMatch;
-  // if (route.component) r.component = route.component;
-  // if (route.data) {
-  //   r.data = route.data;
-  //   r.canActivate = [HttpGuard];
-  // }
-
-  routes.push(route);
-}
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'canvas/:id', component: CanvasComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
