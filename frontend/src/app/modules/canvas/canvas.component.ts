@@ -60,6 +60,7 @@ export class CanvasComponent implements AfterViewInit {
 
   clearCanvas() {
     this.canvas.clear();
+    this.saveCanvas();
   }
 
   handleColor() {
