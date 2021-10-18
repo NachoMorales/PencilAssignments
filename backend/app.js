@@ -1,98 +1,41 @@
 const express = require('express');
-const path = require('path');
-// const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
-// import http from 'http'
-// const multipart = require('connect-multiparty');
 const settings = require('./config/settings');
 
-// const https = require('https')
-// const fs = require('fs');
-
 const app = express();
-// const server = http.Server(app);
-
-// HTTPS
-
-// const cert = fs.readFileSync('./certificate.crt');
-// const ca = fs.readFileSync('./ca_bundle.crt');
-// const key = fs.readFileSync('./private.key');
-
-
-// Define garbage collector
-if (global.gc) {
-  setInterval(() => {
-    global.gc();
-  }, 30000);
-}
-
-// Define HttpError class
-class HttpError extends Error {
-  constructor(message, status) {
-    super(message);
-    this.name = this.constructor.name;
-    this.status = status;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-
-// Define DbError class
-class DbError extends Error {
-  constructor(message, code) {
-    super(message);
-    this.name = this.constructor.name;
-    this.code = code;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 // (+) LIBRARIES
 
-// Define lib
 const lib = {};
 
-// Define http error
 lib.httpError = (status, message) => {
 
-  // Define result
   let result = new Error(message);
 
-  // Define result status
   result.status = status || 400;
 
-  // Return result
   return result;
 };
 
-// Define db error
 lib.dbError = (code, message) => {
 
-  // Define result
   let result = new Error(message);
 
-  // Define result status
   result.code = code || -1000;
 
-  // Return result
   return result;
 };
 
-// Define lib uuid
 lib.uuid = require('uuid');
 
-// Define lib fs
 lib.fs = require('fs');
 
-// Define lib url
 lib.url = require('url');
 
 
 // Define lib utils
 lib.utils = {
-
-  // Define method
-  // to normalize file name (the-name -> theName)
   normalizeFileName: (value) => {
     return value.replace(/\.js$/, '').replace(/\./g, ' ').replace(/_/g, ' ').replace(/\W+(.)/g, function(match, chr) {
       return chr.toUpperCase();
@@ -109,18 +52,6 @@ lib.mongodb.plugins.push(require('meanie-mongoose-to-json'));
 
 // (-) LIBRARIES
 
-
-// HTTPS
-
-// let options = {
-//    cert: cert,
-//    ca: ca,
-//    key: key
-// };
-
-// https.createServer(options, app).listen(settings.portHttps);
-
-
 app.use(function (req, res, next) {
 	if (process.env.NODE_ENV && process.env.NODE_ENV == 'test') {
 		req.settings = require('./test/config/settings')
@@ -129,7 +60,6 @@ app.use(function (req, res, next) {
 	}
 	return next()
 })
-
 
 // cache control error 304
 app.disable('etag');
@@ -142,20 +72,12 @@ app.use(function(req, res, next) {
 	next()
 })
 
-// app.use(multipart({
-// 	uploadDir: '/tmp/'
-// }))
-
 app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({
 	parameterLimit: 100000,
 	limit: '50mb',
 	extended: true
 }));
-
-// app.use(cookieParser())
-
 
 // (+) DATABASE
 
@@ -187,11 +109,10 @@ global.modules = {};
 for (let m in modulesLoad) {
   global.modules[m] = {};
   global.modules[m].settings = settings;
-  // global.modules[m].server = server;
   global.modules[m].router = express.Router();
   global.modules[m].app = app;
-  // global.modules[m].db = db;
   global.modules[m].lib = lib;
+
   for (let t in modulesLoad[m]) {
     if (modulesLoad[m][t] && typeof modulesLoad[m][t] == 'function') {
       try {
@@ -213,7 +134,6 @@ for (let m in global.modules) {
   }
 }
 
-
 // Verify modules models events
 for (let m in global.modules) {
   if (global.modules[m].model && global.modules[m].model.beforeExecuteLoad) {
@@ -231,20 +151,7 @@ for (let m in global.modules) {
 
 // (-) MODULES
 
-/*
- * @static content
- * app.use('/speechToText', express.static(path.join(__dirname, './static/speechToText.html')));
- * app.use('/files', express.static(path.join(__dirname, './static/files/')));
- */
 app.use('/api', routes)
-
-app.use('/', express.static(path.join(__dirname, '../adm/dist/adm/')))
-app.use('/files', express.static(path.join(__dirname, '/files/')))
-
-app.get('/*',  function(req, res) {
-	res.sendFile('index.html', { root: '../adm/dist/adm/' })
-})
-
 
 // Define api error middleware
 app.use("/api", (error, req, res, next) => {
@@ -254,4 +161,3 @@ app.use("/api", (error, req, res, next) => {
 });
 
 module.exports = app;
-// export {app, server}

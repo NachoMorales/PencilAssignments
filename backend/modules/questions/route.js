@@ -11,24 +11,13 @@ module.exports = (module) => {
    * @param {Object} next - Next
    * @return {void}
    */
-  module.router.get('/', /**global.helpers.security.auth(['administrator']),**/ (req, res, next) => {
-    global.helpers.database.find(req, res, module.model)
-      .then(result => res.send(result))
-      .catch(next);
-  });
+  module.router.get('/', async (req, res, next) => {
+    const urlParts = module.lib.url.parse(req.url, true);
+    const filter = urlParts.query._filters ? JSON.parse(urlParts.query._filters) : {};
 
-  /**
-   * FindById
-   *
-   * @param {Object} req - Request
-   * @param {Object} res - Response
-   * @param {Object} next - Next
-   * @return {void}
-   */
-  module.router.get('/:id', /**global.helpers.security.auth(['administrator']),**/ (req, res, next) => {
-    global.helpers.database.findById(req, res, module.model)
-      .then(result => res.send(result))
-      .catch(next);
+    const data = await module.model.find(filter).catch(next);
+
+    res.send({ data });
   });
 
   /**
@@ -40,9 +29,9 @@ module.exports = (module) => {
    * @return {void}
    */
   module.router.post('/', async (req, res, next) => {
-    const question = await module.model.create(req.body).catch(next);
+    const data = await module.model.create(req.body).catch(next);
 
-    res.send({ data: question });
+    res.send({ data });
   });
 
   /**
@@ -53,24 +42,10 @@ module.exports = (module) => {
    * @param {Object} next - Next
    * @return {void}
    */
-  module.router.put('/:id', /**global.helpers.security.auth(['administrator']),**/ (req, res, next) => {
-    global.helpers.database.update(req, res, module.model)
-      .then(result => res.send(result))
-      .catch(next);
-  });
-  
-  /**
-   * Delete
-   *
-   * @param {Object} req - Request
-   * @param {Object} res - Response
-   * @param {Object} next - Next
-   * @return {void}
-   */
-  module.router.delete('/:id', /**global.helpers.security.auth(['administrator']),**/ (req, res, next) => {
-    global.helpers.database.delete(req, res, module.model)
-      .then(result => res.send(result))
-      .catch(next);
+  module.router.put('/:id', async (req, res, next) => {
+    const data = await module.model.findByIdAndUpdate(req.params.id, req.body, { new: true }).catch(next);
+
+    res.send({ data });
   });
   
 };
