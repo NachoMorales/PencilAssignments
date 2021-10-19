@@ -13,8 +13,7 @@ module.exports = (module) => {
    */
   module.router.get('/', async (req, res, next) => {
 
-    const urlParts = module.lib.url.parse(req.url, true);
-    const filter = urlParts.query._filters ? JSON.parse(urlParts.query._filters) : {};
+    const filter = req.query._filters ? JSON.parse(req.query._filters) : {};
 
     const data = await module.model.find(filter).catch(next);
 
@@ -31,7 +30,7 @@ module.exports = (module) => {
    */
   module.router.get('/search', async (req, res, next) => {
 
-    if (!req.query.q) return next(module.lib.httpError(400, `Please provide query params`));
+    if (!req.query.q) return next(module.lib.httpError(400, 'Please provide query params.'));
 
     const query = JSON.parse(req.query.q);
 
@@ -49,7 +48,7 @@ module.exports = (module) => {
 
         const nextTopics = (await topics[i].populate('nextTopics')).nextTopics;
 
-        for (const nextTopic of nextTopics) topics.push(nextTopic)
+        for (const nextTopic of nextTopics) topics.push(nextTopic);
       }
     }
     

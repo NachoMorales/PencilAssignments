@@ -18,21 +18,7 @@ lib.httpError = (status, message) => {
   return result;
 };
 
-lib.dbError = (code, message) => {
-
-  let result = new Error(message);
-
-  result.code = code || -1000;
-
-  return result;
-};
-
-lib.uuid = require('uuid');
-
 lib.fs = require('fs');
-
-lib.url = require('url');
-
 
 // Define lib utils
 lib.utils = {

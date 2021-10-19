@@ -13,8 +13,7 @@ module.exports = (module) => {
    */
   module.router.get('/', async (req, res, next) => {
 
-    const urlParts = module.lib.url.parse(req.url, true);
-    const filter = urlParts.query._filters ? JSON.parse(urlParts.query._filters) : {};
+    const filter = req.query._filters ? JSON.parse(req.query._filters) : {};
 
     const data = await module.model.find(filter).catch(next);
 
