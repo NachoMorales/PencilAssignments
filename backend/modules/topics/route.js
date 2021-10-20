@@ -32,9 +32,9 @@ module.exports = (module) => {
 
     if (!req.query.q) return next(module.lib.httpError(400, 'Please provide query params.'));
 
-    const query = JSON.parse(req.query.q);
+    const query = JSON.parse(req.query.q).trim();
 
-    const filter = { annotation: { $regex: query, $options: 'i' } };
+    const filter = { annotation: query };
 
     const Topic = await module.model.findOne(filter).catch(next);
     
