@@ -10,6 +10,7 @@
   right: 1vw;
   z-index: 2;
   max-width: 20vw;
+  min-width: 100px;
 
   button {
     text-align: center;
@@ -26,4 +27,13 @@
   left: 1vw;
   z-index: 2;
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .shared-canvas {
+    top: unset;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

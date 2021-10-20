@@ -4,7 +4,7 @@
     </a>
     <a class="navbar-brand me-3" *ngIf="userLogged | async as user">
         <img [src]="user.photoURL" onerror="this.src = 'assets/imgs/avatar.png'" width="40" height="40" class="d-inline-block aling-top avatar me-1">
-        {{ user.email }}
+        <b class="email d-none d-md-inline">{{ user.email }}</b>
         <img src="assets/imgs/logout.svg" class="icon ms-3" (click)="logout()">
     </a>
   </nav>
