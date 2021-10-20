@@ -74,7 +74,10 @@ export class CanvasComponent implements AfterViewInit {
   restoreCanvas() {
     const subscription = this.dbCanvas.subscribe((res: any) => {
       
-      if (!res) return;
+      if (!res) {
+        this.saveCanvas();
+        return;
+      }
       
       if (this.canvasId === this.user?.uid) this.sharedCanvas = res.shared || [];
       
@@ -111,7 +114,7 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   share() {
-    this.db.database.ref().orderByChild('email').equalTo(this.shareEmail).get()
+    this.db.database.ref().orderByChild('email').equalTo(this.shareEmail).once('value')
     .then(res => {
       const users = res.val();
 
@@ -126,7 +129,7 @@ export class CanvasComponent implements AfterViewInit {
 
       this.shareEmail = null;
       this.shareEmailError = null;
-    });
+    }).catch(e => console.error(e));
   }
 
   selectCanvas(id: string) {
