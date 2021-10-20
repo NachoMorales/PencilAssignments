@@ -48,4 +48,19 @@ module.exports = (module) => {
     res.send({ data });
   });
   
+  /**
+   * Delete
+   *
+   * @param {Object} req - Request
+   * @param {Object} res - Response
+   * @param {Object} next - Next
+   * @return {void}
+   */
+   module.router.delete('/:id', async (req, res, next) => {
+    const data = await module.model.findById(req.params.id).catch(next);
+
+    await data.remove().catch(next);
+
+    res.send({ data });
+  });
 };

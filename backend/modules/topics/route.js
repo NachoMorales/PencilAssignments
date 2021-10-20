@@ -36,31 +36,36 @@ module.exports = (module) => {
 
     const filter = { annotation: { $regex: query, $options: 'i' } };
 
-    const topic = await module.model.findOne(filter).catch(next);
+    const Topic = await module.model.findOne(filter).catch(next);
     
-    if (!topic) return next(module.lib.httpError(404, `Topic '${ query }' not found`));
+    if (!Topic) return next(module.lib.httpError(404, `Topic '${ query }' not found`));
 
-    let topics = [ topic ];
+    const topics = [ Topic ];
 
-    for (let i = 0; i < topics.length; i++) {
+    for (const topic of topics) {
 
-      if (!topics[i].last) {
+      if (!topic.last) {
 
-        const nextTopics = (await topics[i].populate('nextTopics')).nextTopics;
+        const nextTopics = (await topic.populate('nextTopics')).nextTopics;
 
         for (const nextTopic of nextTopics) topics.push(nextTopic);
       }
     }
     
     const topicsIds = topics.map(topic => topic._id);
-
-    const questions = await global.modules.questions.model.find({ annotations: { $in: topicsIds } }).catch(next);
-    // const questions = await global.modules.questions.model.find({ annotations: { $in: topicsIds } }).populate('annotations').catch(next);
-
+    
+    let questions = await global.modules.questions.model.find({ annotations: { $in: topicsIds } }).sort({ number: 1 }).catch(next);
+    
     const numbers = questions.map(question => question.number);
+    
+    if (!req.query.logs) return res.send({ questions: numbers });
+    
+    questions = await global.modules.questions.model.find({ annotations: { $in: topicsIds } }).populate({ path: 'annotations', select: 'annotation' }).select('number annotations').sort({ number: 1 }).catch(next);
+    
+    const topicsAnnotations = topics.map(topic => topic.annotation);
 
-    res.send({ questions: numbers });
-    // res.send({ questions, topic });
+    res.send({ questionNumbers: numbers, topics: topicsAnnotations, questions, tree: Topic });
+
   });
 
   /**
@@ -93,4 +98,19 @@ module.exports = (module) => {
     res.send({ data });
   });
   
+  /**
+   * Delete
+   *
+   * @param {Object} req - Request
+   * @param {Object} res - Response
+   * @param {Object} next - Next
+   * @return {void}
+   */
+  module.router.delete('/:id', async (req, res, next) => {
+    const data = await module.model.findById(req.params.id).catch(next);
+
+    await data.remove().catch(next);
+
+    res.send({ data });
+  });
 };

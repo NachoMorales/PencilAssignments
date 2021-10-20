@@ -73,35 +73,41 @@ export class CanvasComponent implements AfterViewInit {
 
   restoreCanvas() {
     const subscription = this.dbCanvas.subscribe((res: any) => {
+      
       if (!res) return;
+      
       if (this.canvasId === this.user?.uid) this.sharedCanvas = res.shared || [];
+      
       this.color = res.color;
+      
       this.canvas.loadFromJSON(JSON.parse(res.canvas), this.canvas.renderAll.bind(this.canvas));
+      
       this.handleColor();
     });
 
     this.subscriptions.push(subscription);
   }
 
-  handleImage(e: any) {
+  handleImage(event: Event) {
+    const input = event.target as HTMLInputElement;
 
-    if (e.target.files && e.target.files[0]) {
-      const file: File = e.target.files[0];
-      const reader = new FileReader();
+    if (!input.files?.length) return;
 
-      reader.onload = ev => {        
-        
-        if (typeof reader.result !== 'string') return;
+    const file: File = input.files[0];
+    const reader = new FileReader();
 
-        fabric.Image.fromURL(reader.result, img => {
-          this.canvas.add(img);
-          this.canvas.centerObject(img);
-          this.saveCanvas();
-        });
-      }
+    reader.onload = ev => {
 
-      reader.readAsDataURL(file);
+      if (typeof reader.result !== 'string') return;
+
+      fabric.Image.fromURL(reader.result, img => {
+        this.canvas.add(img);
+        this.canvas.centerObject(img);
+        this.saveCanvas();
+      });
     }
+
+    reader.readAsDataURL(file);
   }
 
   share() {
